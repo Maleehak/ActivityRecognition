@@ -21,8 +21,8 @@ def skeletonize(frame):
         temp = cv2.dilate(eroded,element)
         temp = cv2.subtract(frame,temp)
         skel = cv2.bitwise_or(skel,temp)
-        image = eroded.copy()
-        zeros = size - cv2.countNonZero(image)
+        frame = eroded.copy()
+        zeros = size - cv2.countNonZero(frame)
         if zeros==size:
             done = True
     return skel
