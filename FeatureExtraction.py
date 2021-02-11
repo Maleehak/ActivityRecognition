@@ -110,15 +110,17 @@ def feature_vector(upper , lower_left, lower_right):
         lower_left: lower most point of left leg,
         lower_right:lower most point of right leg
     Returns: 
-        [centroid,angle,length_left_leg,length_right_leg]
+        [centroidX,centroidY,angle,length_left_leg,length_right_leg]
     '''
     centroid = int((upper[0]+ lower_left[0] + lower_right[0])/3) , int((upper[1]+ lower_left[1] + lower_right[1])/3)
+    centroidX = centroid[0]
+    centroidY = centroid[1]
     left_leg = [(centroid[0], centroid[1]), (lower_left[0], lower_left[1])]
     right_leg = [(centroid[0], centroid[1]), (lower_right[0], lower_right[1])]
     angle = ang(left_leg, right_leg)
     length_left_leg = distance(centroid,lower_left)
     length_right_leg = distance(centroid,lower_right)
-    return [centroid,angle, length_left_leg, length_right_leg]
+    return [centroidX,centroidY,angle, length_left_leg, length_right_leg]
 
 
 def feature_extraction(read_folder):
@@ -133,7 +135,9 @@ def feature_extraction(read_folder):
     '''
     files = [file for file in os.listdir(read_folder)]
     sorted_files = sorted(files, key=natural_sort_key)
+    i = 0
     features_per_video = []
+    feature_header = ["centroidX", "centroidY","angleBetweenLegs", "lengthOfLeftLeg", "lengthOfRightLeg"]
     for file in sorted_files:
         frame = cv2.imread(read_folder+file,0)
         points = compute_points(frame)
@@ -142,8 +146,10 @@ def feature_extraction(read_folder):
         lower_right  = points['lower_right']
         if  all(upper) & all(lower_right) & all(lower_right):
             feature_vec = feature_vector(upper , lower_left, lower_right)
-            print(feature_vec)
+            print(i,feature_vec)
             features_per_video.append(feature_vec)
-    return features_per_video
+        i = i+1
+    return features_per_video, feature_header
 
-#features_per_video = feature_extraction('E:/FYP/fyp/Activity Recognition/frames_hough/')
+#features_per_video, feature_header = feature_extraction('E:/FYP/fyp/Activity Recognition/frames_hough/')
+#print(features_per_video)
