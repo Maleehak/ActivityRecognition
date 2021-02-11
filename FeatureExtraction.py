@@ -97,7 +97,7 @@ def ang(lineA, lineB):
     '''
     vA = [(lineA[0][0]-lineA[1][0]), (lineA[0][1]-lineA[1][1])]
     vB = [(lineB[0][0]-lineB[1][0]), (lineB[0][1]-lineB[1][1])]
-    angle = np.math.atan2(np.linalg.det([vA,vB]),np.dot(vA,vB))
+    angle = np.math.atan(np.linalg.det([vA,vB]),np.dot(vA,vB))
     return np.degrees(angle)
 
 def feature_vector(upper , lower_left, lower_right):
